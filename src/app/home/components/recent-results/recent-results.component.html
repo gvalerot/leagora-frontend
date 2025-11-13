@@ -1,0 +1,42 @@
+<ion-card class="last-results-card">
+  <ion-card-header>
+    <ion-card-title>Last Results</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="results-grid">
+      @for (result of recentResults; track result.id) {
+        <ion-card class="result-card">
+          <ion-card-header>
+            <ion-card-subtitle>{{ result.tournamentName }}</ion-card-subtitle>
+            <ion-card-title>{{ result.date | date: 'mediumDate' }}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <div class="result-row">
+              <div class="player">
+                <img
+                  [src]="getImg(result.charactersPlayer1[0])"
+                  alt="{{ result.charactersPlayer1[0] }}"
+                  class="character-icon"
+                />
+                <span class="player-name">{{ result.player1 }}</span>
+              </div>
+
+              <div class="score">{{ result.score }}</div>
+
+              <div class="player">
+                <img
+                  [src]="getImg(result.charactersPlayer2[0])"
+                  alt="{{ result.charactersPlayer2[0] }}"
+                  class="character-icon"
+                />
+                <span class="player-name">{{ result.player2 }}</span>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      }
+    </div>
+  </ion-card-content>
+</ion-card>

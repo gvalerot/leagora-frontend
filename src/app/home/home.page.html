@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="header-toolbar">
+    <div class="header-content">
+      <ion-img
+        src="assets/img/firstLogoNoBG.png"
+        slot="start"
+        class="logo"
+      ></ion-img>
+      <ion-title class="title">Welcome to F-Smash!</ion-title>
+    </div>
+    <ion-buttons slot="end">
+      <ion-button (click)="logOut()"><ion-icon name="log-out"></ion-icon> Log out</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="home-content">
+  <fs-your-leagues [Leagues]="myLeagues"></fs-your-leagues>
+  <fs-upcoming-tournaments [upcomingTournament]="upcomingTournament"></fs-upcoming-tournaments>
+  <fs-recent-results [recentResults]="recentResults"></fs-recent-results>
+</ion-content>

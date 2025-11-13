@@ -1,0 +1,29 @@
+<ion-card class="your-leagues-card">
+  <ion-card-header>
+    <ion-card-title>Your Leagues</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="leagues-grid">
+      @for (league of Leagues; track league.id) {
+        <ion-card
+          class="league-card"
+          routerLink="/league/{{ league.id }}"
+        >
+          <img
+            [src]="
+              league.logo
+                ? league.logo
+                : 'assets/icon/defaultLeagueLogo.svg'
+            "
+            alt="League Logo"
+            class="league-logo"
+          />
+          <ion-card-header>
+            <ion-card-title class="league-name">{{ league.name }}</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      }
+    </div>
+  </ion-card-content>
+</ion-card>

@@ -1,0 +1,37 @@
+ <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Leagues</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openLeagueModal()">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    @for (league of leagues; track league.id) {
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-img [src]="league.urlLogo || 'assets/img/firstLogoNoBG.png'"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ league.name }}</h2>
+          <p>ID: {{ league.id }}</p>
+        </ion-label>
+        <ion-button fill="clear" slot="end" (click)="editLeague(league)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    }
+  </ion-list>
+
+  <ion-infinite-scroll threshold="10px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Cargando más..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content> 

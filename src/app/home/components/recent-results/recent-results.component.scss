@@ -1,0 +1,120 @@
+ion-card.last-results-card {
+  width: 100%;
+  margin: 20px auto;
+  background: #181818;
+  color: #fff;
+  border-radius: 20px;
+  padding: 10px;
+
+  ion-card-header {
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 10px;
+
+    ion-card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+  }
+
+  ion-card-content {
+    padding: 10px;
+  }
+}
+
+/* Grid contenedor de los resultados */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
+  }
+}
+
+/* Tarjetas individuales de cada resultado */
+.result-card {
+  background: #202020;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  }
+
+  ion-card-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 0.75rem;
+
+    ion-card-subtitle {
+      font-size: 0.8rem;
+      color: #bbb;
+    }
+
+    ion-card-title {
+      font-size: 0.9rem;
+      color: #fff;
+    }
+  }
+
+  ion-card-content {
+    padding: 0.75rem;
+  }
+}
+
+/* Fila principal con jugadores y marcador */
+.result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+
+  .character-icon {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    margin-bottom: 4px;
+  }
+
+  .player-name {
+    font-size: 0.85rem;
+    color: #ddd;
+    text-align: center;
+    word-break: break-word;
+  }
+}
+
+.score {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  margin: 0 4px;
+  min-width: 40px;
+  text-align: center;
+}

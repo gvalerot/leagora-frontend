@@ -1,0 +1,47 @@
+<form [formGroup]="form">
+  <ion-item>
+    <ion-label position="floating">Nombre de la liga</ion-label>
+    <ion-input formControlName="name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Logo</ion-label>
+    <input type="file" (change)="onLogoSelected($event)" accept="image/*" />
+  </ion-item>
+
+  @if(logoPreview){
+  <div class="logo-preview">
+    <img [src]="logoPreview" alt="Logo preview" style="width: 24px;height: 24px;"/>
+  </div>
+  }
+
+  <ion-item>
+    <ion-label position="floating">Agregar participante</ion-label>
+    <ion-input #userInput type="text"></ion-input>
+    <ion-button
+      (click)="
+        addParticipant((userInput.value ?? '').toString()); userInput.value = ''
+      "
+      >Add</ion-button
+    >
+  </ion-item>
+
+  <ion-list>
+    @for(participant of participants.controls; track $index){
+    <ion-item>
+      <ion-label>{{ participant.value }}</ion-label>
+      <ion-button
+        fill="clear"
+        color="danger"
+        (click)="removeParticipant($index)"
+        >Eliminar</ion-button
+      >
+    </ion-item>
+    }
+  </ion-list>
+
+  
+  <ion-button slot="end" type="button" [disabled]="form.invalid" (click)="onSubmit()"
+    >{{ exists ? 'Edit league' : 'Create league' }}</ion-button>
+  
+</form>

@@ -1,0 +1,12 @@
+ion-content {
+  --overflow: auto;
+}
+
+ion-content::part(scroll) {
+  overflow-y: auto !important;
+  contain: none !important;
+}
+
+ion-list {
+  padding-bottom: 80px; /* evita que el infinite scroll se solape con tabs */
+}

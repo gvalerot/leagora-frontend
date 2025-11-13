@@ -1,0 +1,56 @@
+:host {
+  font-family: 'Montserrat', sans-serif;
+}
+
+:host ::ng-deep * {
+  font-family: inherit;
+}
+
+/* HEADER */
+.header-toolbar {
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 1rem;
+  }
+
+  .logo {
+    height: 120px;
+    width: auto;
+    margin-bottom: 8px;
+  }
+
+  .title {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #fff;
+  }
+}
+
+/* ION CONTENT */
+.home-content {
+  --background: #121212;
+  padding-bottom: 80px; /* deja espacio para la tab bar */
+}
+
+/* 🔥 Fix para el scroll bloqueado */
+ion-content {
+  --overflow: auto;
+}
+
+ion-content::part(scroll) {
+  overflow-y: auto !important;
+  contain: none !important;
+}
+
+/* 🔧 Asegura que los componentes sean bloques */
+fs-your-leagues,
+fs-upcoming-tournaments,
+fs-recent-results {
+  display: block;
+  margin-bottom: 1rem;
+}
