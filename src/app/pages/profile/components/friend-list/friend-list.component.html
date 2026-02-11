@@ -1,0 +1,12 @@
+<div *ngIf="friends != null && friends.length > 0;else noFriends">
+  @for(friend of friends; track friend.id) {
+  <ion-item>
+    <ion-label>
+      <h2>{{ friend.username }}</h2>
+    </ion-label>
+  </ion-item>
+  }
+</div>
+<ng-template #noFriends>
+  <p>No friends found yet...</p>
+</ng-template>

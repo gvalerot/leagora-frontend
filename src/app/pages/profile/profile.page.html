@@ -1,13 +1,28 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-title>Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
+      <ion-title size="large">Profile</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-toolbar>
+        <ion-card-title slot="start">Friend List</ion-card-title>
+        <ion-button slot="end" (click)="openAddFriendModal()">Add friend</ion-button>
+      </ion-toolbar>
+    </ion-card-header>
+    <ion-card-content>
+      <fs-pending-request [pendingRequest]="pendingRequest" (acceptRequest)="acceptRequest($event)"
+        (rejectRequest)="rejectRequest($event)"></fs-pending-request>
+      <fs-friend-list [friends]="friends"></fs-friend-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-toast [isOpen]="isToastOpen" message="{{toastMessage}}" [duration]="3000"
+    (didDismiss)="setOpen(false)"></ion-toast>
 </ion-content>

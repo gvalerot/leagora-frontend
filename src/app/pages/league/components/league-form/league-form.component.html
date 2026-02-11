@@ -11,37 +11,28 @@
 
   @if(logoPreview){
   <div class="logo-preview">
-    <img [src]="logoPreview" alt="Logo preview" style="width: 24px;height: 24px;"/>
+    <img [src]="logoPreview" alt="Logo preview" />
   </div>
   }
 
-  <ion-item>
-    <ion-label position="floating">Agregar participante</ion-label>
-    <ion-input #userInput type="text"></ion-input>
-    <ion-button
-      (click)="
-        addParticipant((userInput.value ?? '').toString()); userInput.value = ''
-      "
-      >Add</ion-button
-    >
+  <ion-item class="participants">
+    <ion-label>Participants</ion-label>
+    <div *ngIf="friends && friends.length > 0; else noParticipants">
+      <ion-select [multiple]="true" formControlName="participants">
+        @for(participant of friends; track participant.id){
+        <ion-select-option [value]="participant.id">{{ participant.username }}</ion-select-option>
+        }
+      </ion-select>
+
+    </div>
+    <ng-template #noParticipants>
+      <ion-item>
+        <ion-label>Try adding someone first!</ion-label>
+      </ion-item>
+    </ng-template>
   </ion-item>
 
-  <ion-list>
-    @for(participant of participants.controls; track $index){
-    <ion-item>
-      <ion-label>{{ participant.value }}</ion-label>
-      <ion-button
-        fill="clear"
-        color="danger"
-        (click)="removeParticipant($index)"
-        >Eliminar</ion-button
-      >
-    </ion-item>
-    }
-  </ion-list>
+  <ion-button slot="end" type="button" [disabled]="form.invalid" (click)="onSubmit()">{{ exists ? 'Save league' :
+    'Create league' }}</ion-button>
 
-  
-  <ion-button slot="end" type="button" [disabled]="form.invalid" (click)="onSubmit()"
-    >{{ exists ? 'Edit league' : 'Create league' }}</ion-button>
-  
 </form>

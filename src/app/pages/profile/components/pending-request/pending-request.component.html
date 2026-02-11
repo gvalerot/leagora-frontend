@@ -1,0 +1,11 @@
+<div *ngIf="pendingRequest && pendingRequest.length > 0">
+  @for(req of pendingRequest; track req.id){
+  <ion-item>
+    <ion-label>The user {{req.sender.username}} sent you a friend request</ion-label>
+    <ion-button slot="end" (click)="acceptRequestHandler(req)" color="success"><ion-icon
+        name="checkmark"></ion-icon>Accept</ion-button>
+    <ion-button slot="end" (click)="rejectRequestHandler(req)" color="danger"><ion-icon
+        name="close"></ion-icon>Reject</ion-button>
+  </ion-item>
+  }
+</div>

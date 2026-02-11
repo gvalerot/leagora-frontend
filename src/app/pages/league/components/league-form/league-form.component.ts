@@ -1,10 +1,8 @@
 import {
   Component,
-  EventEmitter,
   Input,
   OnChanges,
   OnInit,
-  Output,
   SimpleChanges,
 } from '@angular/core';
 import {
@@ -13,6 +11,7 @@ import {
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormControl,
 } from '@angular/forms';
 import { League } from 'src/app/models/league';
 import {
@@ -20,15 +19,27 @@ import {
   IonLabel,
   IonInput,
   IonButton,
-  IonList,
-  ModalController
+  IonSelect,
+  IonSelectOption,
+  ModalController,
 } from '@ionic/angular/standalone';
+import { User } from 'src/app/models/user';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'fs-league-form',
   templateUrl: './league-form.component.html',
   styleUrls: ['./league-form.component.scss'],
-  imports: [ReactiveFormsModule, IonItem, IonLabel, IonInput, IonButton, IonList],
+  imports: [
+    ReactiveFormsModule,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonButton,
+    IonSelect,
+    IonSelectOption,
+    CommonModule,
+  ],
 })
 export class LeagueFormComponent implements OnInit, OnChanges {
   form!: FormGroup;
@@ -38,47 +49,46 @@ export class LeagueFormComponent implements OnInit, OnChanges {
   logoPreview: string | ArrayBuffer | null = null;
 
   @Input() league!: League;
+  @Input() friends!: User[];
 
   constructor(private fb: FormBuilder, private modalCtrl: ModalController) {
     this.form = this.fb.group({
       name: ['', Validators.required],
       logo: [''],
-      participants: this.fb.array([]),
+      participants: this.fb.control([]),
     });
   }
 
   ngOnInit(): void {
     if (this.league && this.league.name) {
       this.exists = true;
-      const value = this.league;
-      this.logoPreview = this.league?.urlLogo? this.league.urlLogo : null;
+      const value = {
+        ...this.league,
+        participants: this.league.participants?.map((p) => p.id) || [],
+      };
+      this.logoPreview = this.league?.urlLogo ? this.league.urlLogo : null;
       this.form.patchValue(value);
     }
   }
-  
+
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("editing")
+    console.log('editing');
     if (this.league && this.league.name) {
-      console.log("editing")
+      console.log('editing');
       this.exists = true;
-      const value = this.league;
+      const value = {
+        ...this.league,
+        participants: this.league.participants?.map((p) => p.id) || [],
+      };
       this.form.patchValue(value);
     }
   }
 
   get participants() {
-    return this.form.get('participants') as FormArray;
+    return this.form.get('participants') as FormControl;
   }
 
-  addParticipant(username: string) {
-    this.participants.push(this.fb.control(username.trim()));
-  }
-
-  removeParticipant(index: number) {
-    this.participants.removeAt(index);
-  }
-
-   async onLogoSelected(event: Event) {
+  async onLogoSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
@@ -90,9 +100,9 @@ export class LeagueFormComponent implements OnInit, OnChanges {
     reader.readAsDataURL(file);
   }
 
-  onSubmit(){
+  onSubmit() {
     if (this.form.valid) {
-      const data  = {...this.league, ...this.form.value};
+      const data = { ...this.league, ...this.form.value };
       const role = this.exists ? 'update' : 'create';
       this.modalCtrl.dismiss(data, role);
     }

@@ -1,0 +1,17 @@
+<div>
+  @for(user of users; track user.id) {
+  <ion-item>
+    <ion-avatar slot="start">
+      <!-- <ion-img [src]="user. || 'assets/img/firstLogoNoBG.png'"></ion-img> -->
+    </ion-avatar>
+    <ion-label>
+      <h2>{{ user.username }} </h2>
+      <p>ID: {{ user.id }}</p>
+    </ion-label>
+    <ion-button (click)="sendFriendRequest(user)" slot="end">
+      <ion-icon name="person"></ion-icon>
+      Add
+    </ion-button>
+  </ion-item>
+  }
+</div>

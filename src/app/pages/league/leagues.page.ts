@@ -20,6 +20,8 @@ import {
   IonIcon,
 } from '@ionic/angular/standalone';
 import { LeagueService } from 'src/app/services/league/leagueService';
+import { UserService } from 'src/app/services/user/user-service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-leagues',
@@ -46,18 +48,25 @@ export class LeaguesPage implements OnInit {
   leagues!: League[];
   page = 0;
   pageSize = 10;
-  allLeagues: League[] = []; 
+  allLeagues: League[] = [];
+  friends!: User[];
 
   constructor(
     private modalController: ModalController,
-    private leagueService: LeagueService
+    private leagueService: LeagueService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    const user = localStorage.getItem("user");
+    this.getLeagues();
+    this.getFriends();
+  }
 
-    if(!user){
-      console.error("No user logged in");
+  getLeagues() {
+    const user = localStorage.getItem('user');
+
+    if (!user) {
+      console.error('No user logged in');
       return;
     }
 
@@ -72,7 +81,7 @@ export class LeaguesPage implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar las ligas', err);
-      }
+      },
     });
   }
 
@@ -110,35 +119,71 @@ export class LeaguesPage implements OnInit {
   async openLeagueModal(league?: League) {
     const modal = await this.modalController.create({
       component: LeagueFormComponent,
-      componentProps: { league },
+      componentProps: { league, friends: this.friends },
     });
 
     await modal.present();
 
     const { data, role } = await modal.onWillDismiss();
 
-    const user = localStorage.getItem("user");
+    const user = localStorage.getItem('user');
 
-    if(!user){
-      console.error("No user logged in");
+    if (!user) {
+      console.error('No user logged in');
       return;
     }
 
     if (data) {
       if (role === 'create') {
-        this.leagueService.createLeague(data).subscribe({
-          next: (createdLeague) => {
-            this.leagues.unshift(createdLeague);
-          },
-          error: (err) => {
-            console.error('Error al crear la liga', err);
-          },
-        });
+        this.createLeague(data);
+      }
+
+      if (role === 'update') {
       }
     }
   }
 
   editLeague(league: League) {
     this.openLeagueModal(league);
+  }
+
+  getFriends() {
+    const user = localStorage.getItem('user');
+    if (!user) {
+      throw new Error('No user logged in');
+    }
+    const idUser = JSON.parse(user).id;
+    this.userService.getFriends(idUser).subscribe({
+      next: (result) => {
+        this.friends = result;
+      },
+      error: (error) => {
+        console.error('Error fetching friends:', error);
+      },
+    });
+  }
+
+  createLeague(league: League) {
+    this.leagueService.createLeague(league).subscribe({
+      next: (createdLeague) => {
+        this.leagues.unshift(createdLeague);
+      },
+      error: (err) => {
+        console.error('Error creating league', err);
+      },
+    });
+  }
+
+  updateLeague(league: League) {
+    this.leagueService.updateLeague(league).subscribe({
+      next: (updatedLeague) => {
+        this.leagues = this.leagues.map((l) =>
+          l.id === updatedLeague.id ? updatedLeague : l
+        );
+      },
+      error: (err) => {
+        console.error('Error updating league', err);
+      },
+    });
   }
 }
